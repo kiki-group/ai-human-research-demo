@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  html {
+    color-scheme: light;
+  }
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    font-feature-settings: "cv02", "cv11", "ss01";
+    font-variant-ligatures: common-ligatures;
+  }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* nicer focus rings */
+  :where(button, a, input, textarea, select):focus-visible {
+    @apply outline-none ring-2 ring-brand-500/35 ring-offset-2 ring-offset-white rounded-lg;
+  }
+}
+
+@layer components {
+  /* ---------- Buttons ---------- */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-brand-600;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-subtle {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md bg-slate-100 px-2.5 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-200;
+  }
+  .btn-icon {
+    @apply inline-grid h-9 w-9 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:bg-slate-50 hover:text-slate-900;
+  }
+
+  /* ---------- Surfaces ---------- */
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-soft;
+  }
+  .card-pad {
+    @apply p-4 sm:p-5;
+  }
+  .panel {
+    @apply rounded-xl border border-slate-200 bg-white;
+  }
+
+  /* ---------- Form controls ---------- */
+  .input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25 disabled:cursor-not-allowed disabled:bg-slate-50;
+  }
+  .label {
+    @apply text-xs font-semibold uppercase tracking-wider text-slate-500;
+  }
+
+  /* ---------- Chips / badges ---------- */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-50;
+  }
+  .chip-active {
+    @apply border-brand-500 bg-brand-50 text-brand-700 hover:bg-brand-50;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-2xs font-semibold;
+  }
+  .badge-neutral {
+    @apply bg-slate-100 text-slate-700;
+  }
+  .badge-brand {
+    @apply bg-brand-50 text-brand-700;
+  }
+  .badge-warn {
+    @apply bg-amber-50 text-amber-700;
+  }
+  .badge-success {
+    @apply bg-emerald-50 text-emerald-700;
+  }
+
+  /* ---------- Misc ---------- */
+  .divider {
+    @apply h-px w-full bg-slate-200;
+  }
+  .kbd {
+    @apply inline-flex items-center rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-2xs font-medium text-slate-600;
+  }
+  .section-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .fade-mask-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent);
+    mask-image: linear-gradient(to bottom, black 80%, transparent);
+  }
+}
