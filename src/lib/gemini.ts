@@ -13,7 +13,22 @@ import {
   SIMULATE_STUDY_PROMPT,
 } from "./prompts";
 
-const MODEL = "gemini-2.5-flash";
+// Model choices are intentionally hardcoded. Users cannot (and should not be
+// able to) select a model. Keep these in one place so they're easy to bump
+// when Google promotes previews to GA or ships a newer generation.
+//
+// As of April 2026:
+//  - Latest general-purpose Flash model: gemini-3-flash-preview
+//  - Latest Pro model: gemini-3.1-pro-preview
+//    (gemini-3-pro-preview was deprecated and shut down 2026-03-09)
+//
+// Flash handles the fast turns (study drafting, conversational edits,
+// audience normalization, API-key validation). Pro handles simulateStudy
+// because it has to generate respondents, full transcripts, AND a
+// synthesized report that references real quotes in one call - that's
+// exactly where Pro's reasoning / consistency pays off.
+const FLASH_MODEL = "gemini-3-flash-preview";
+const PRO_MODEL = "gemini-3.1-pro-preview";
 
 function client(apiKey: string) {
   if (!apiKey) throw new Error("Missing Gemini API key");
@@ -234,7 +249,7 @@ export async function draftStudyFromChat(
 ): Promise<DraftStudyResponse> {
   const ai = client(apiKey);
   const resp = await ai.models.generateContent({
-    model: MODEL,
+    model: FLASH_MODEL,
     contents: toContents(messages),
     config: {
       systemInstruction: CREATE_STUDY_SYSTEM,
@@ -292,7 +307,7 @@ export async function editStudyFromChat(
     ...toContents(messages),
   ];
   const resp = await ai.models.generateContent({
-    model: MODEL,
+    model: FLASH_MODEL,
     contents,
     config: {
       systemInstruction: EDIT_STUDY_SYSTEM,
@@ -322,7 +337,7 @@ export async function normalizeAudience(
 ): Promise<NormalizeAudienceResponse> {
   const ai = client(apiKey);
   const resp = await ai.models.generateContent({
-    model: MODEL,
+    model: FLASH_MODEL,
     contents: [{ role: "user", parts: [{ text }] }],
     config: {
       systemInstruction: AUDIENCE_NORMALIZE_PROMPT,
@@ -357,7 +372,7 @@ export async function simulateStudy(
     nRespondents,
   };
   const resp = await ai.models.generateContent({
-    model: MODEL,
+    model: PRO_MODEL,
     contents: [
       {
         role: "user",
@@ -409,7 +424,7 @@ export async function validateApiKey(apiKey: string): Promise<boolean> {
   const ai = client(apiKey);
   try {
     const resp = await ai.models.generateContent({
-      model: MODEL,
+      model: FLASH_MODEL,
       contents: [{ role: "user", parts: [{ text: "Say 'ok'" }] }],
       config: { temperature: 0, maxOutputTokens: 5 },
     });

@@ -54,14 +54,18 @@ serve from a subdirectory as desired.
 
 ## What's generated vs. mocked
 
-| Step                     | How it works                                                          |
-| ------------------------ | --------------------------------------------------------------------- |
-| Study creation chat      | Gemini (`gemini-2.5-flash`), schema-constrained JSON                  |
-| Conversational editing   | Gemini returns a full updated study + changelog, diff confirmed first |
-| Audience normalization   | Gemini turns free-text into structured filters                        |
-| Interview preview slides | Pure UI — animated waveform + captions, **no audio plays** (demo)     |
-| Pending progress feed    | Fake counter + synthetic activity lines                               |
-| Mock respondents + report| Gemini generates respondents, full transcripts, and a synthesized report in one schema-constrained call, so quotes reference real mock-interview lines |
+| Step                     | Model                    | How it works                                                                                  |
+| ------------------------ | ------------------------ | --------------------------------------------------------------------------------------------- |
+| Study creation chat      | `gemini-3-flash-preview` | Schema-constrained JSON; returns a draft study when ready                                     |
+| Conversational editing   | `gemini-3-flash-preview` | Returns a full updated study + changelog, shown as a diff before applying                     |
+| Audience normalization   | `gemini-3-flash-preview` | Turns free-text audience descriptions into structured filters                                 |
+| Interview preview slides | —                        | Pure UI — animated waveform + captions, **no audio plays** (demo)                             |
+| Pending progress feed    | —                        | Fake counter + synthetic activity lines                                                       |
+| Mock respondents + report| `gemini-3.1-pro-preview` | Generates respondents, full transcripts, and a synthesized report in one schema-constrained call, so quotes reference real mock-interview lines |
+
+Model choices are hardcoded in [`src/lib/gemini.ts`](src/lib/gemini.ts); users
+cannot pick a model. Flash handles lightweight turns; Pro handles the
+heavy, internally-consistent simulation call.
 
 ## Tech
 
